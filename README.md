@@ -1,73 +1,196 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🗺️ MapTrack — Automated Daily Inspection & PDF Reporting Platform
 
-Currently, two official plugins are available:
+🌍 About MapTrack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+MapTrack was created to automate and modernize inspection reporting for construction professionals.
 
-## React Compiler
+Instead of manually collecting images, marking areas, writing notes, and assembling reports, MapTrack centralizes everything and produces a unified PDF report, ready to be shared with stakeholders, teams, or clients.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**MapTrack** is a modern React + TypeScript + Vite application designed to help construction professionals streamline daily inspection workflows.
 
-## Expanding the ESLint configuration
+The platform allows users to:
+- Mark areas of operation on maps or project images  
+- Attach inspection photos  
+- View daily tabulation based on location  
+- Generate structured PDF reports automatically  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+MapTrack eliminates repetitive manual work and centralizes daily construction inspection tasks into one efficient system.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+This project includes a robust, scalable setup with:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **React 18 + TypeScript**
+- **Vite** for ultra-fast bundling
+- **ESLint (Flat Config) + Prettier** for code quality
+- **Husky + lint-staged** for pre-commit automation
+- **Commitlint** enforcing Conventional Commits
+- **Branch naming validation** to keep the workflow organized
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📦 Scripts
+
+| Command           | Description                                   |
+|-------------------|-----------------------------------------------|
+| `npm run dev`     | Start the development server                   |
+| `npm run lint`    | Run ESLint on the entire project               |
+| `npm run format`  | Format all files using Prettier                |
+| `npm run build`   | Build the project for production               |
+| `npm run preview` | Preview the built application locally          |
+
+---
+
+## 🧭 Features of MapTrack
+
+### ✔ Area Marking  
+Professionals can draw or annotate areas directly on images or maps to define zones of work or inspection.
+
+### ✔ Inspection Image Management  
+Upload, edit, and organize photos taken during field inspections.
+
+### ✔ Daily Tabulation by Location  
+View a clear breakdown of all records, actions, and images for the current day based on the user's or project's location.
+
+### ✔ Automated PDF Generation  
+MapTrack compiles:
+- Marked images  
+- Data collected in the day  
+- Inspection metadata  
+- Notes and photos  
+
+Into a structured PDF report ready for delivery or archiving.
+
+---
+
+## 🎯 Project Structure & Aliases
+
+The project uses a scalable architecture with TypeScript path aliases:
+
+@components/*
+@utils/*
+@hooks/*
+@services/*
+@pages/*
+@routes/*
+@providers/*
+@styles/*
+@assets/*
+@layouts/*
+@stories/*
+
+
+All configured in `tsconfig.json`.
+
+---
+
+## 📌 Commit Standards — Conventional Commits
+
+MapTrack enforces [Conventional Commits](https://www.conventionalcommits.org) for clean and readable commit history.
+
+Examples:
+
+feat: add inspection image annotator
+fix: correct PDF generation layout
+docs: update API usage instructions
+refactor: reorganize map drawing utilities
+
+Commits not following the convention will be rejected automatically.
+
+---
+
+## 🌿 Branch Naming Rules
+
+To maintain consistency, branch names must follow:
+
+### ✔ Allowed Patterns
+
+feat/<description>
+fix/<description>
+refactor/<description>
+docs/<description>
+chore/<description>
+test/<description>
+hotfix/<description>
+
+Examples:
+
+feat/add-daily-tabulation
+fix/pdf-generation-encoding
+
+### ✔ Allowed without validation
+
+main
+develop
+release/*
+
+Invalid branch names will block `git push`.
+
+---
+
+## 🛠 Husky Workflow Automation
+
+### 🔹 **pre-commit**
+Executes:
+- ESLint (`--fix`)
+- Prettier (`--write`)
+
+Only staged files are processed (via lint-staged).
+
+### 🔹 **commit-msg**
+Validates commit messages using Commitlint.
+
+### 🔹 **pre-push**
+Validates that the branch name follows project standards.
+
+This ensures every change merged into the codebase is clean and consistent.
+
+---
+
+## ✨ lint-staged Configuration
+
+On each commit, only staged files matching:
+
+src/**/*.{ts,tsx,js,jsx}
+
+Will be:
+
+- Linted with ESLint  
+- Formatted with Prettier  
+
+---
+
+## 🏁 Installation
+
+```bash
+npm install
+
+🚀 Running MapTrack
+npm run dev
+
+App available at:
+
+http://localhost:5173
+
+📄 Production Build
+npm run build
+
+
+Preview the output:
+
+npm run preview
+
+🤝 Contributing Guidelines
+
+To contribute to MapTrack:
+
+Follow Conventional Commits
+
+Use the branch naming rules
+
+Run npm run lint and npm run format before submitting a PR
+
+Ensure no Husky hook fails
