@@ -1,76 +1,90 @@
-import js from '@eslint/js'
-import globals from 'globals'
-
-import tseslint from 'typescript-eslint'
-import tsParser from '@typescript-eslint/parser'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import importPlugin from 'eslint-plugin-import'
-import prettierPlugin from 'eslint-plugin-prettier'
+import js from '@eslint/js';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import importPlugin from 'eslint-plugin-import';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
 
 export default [
-  /* -------------------------------- IGNORE -------------------------------- */
+  // =========================
+  // IGNORE
+  // =========================
   {
-    ignores: [
-      'dist',
-      'node_modules',
-      '.vite',
-      '**/*.config.*',
-    ],
+    ignores: ['dist', 'build', 'node_modules'],
   },
 
-  /* ---------------------------- BASE JS CONFIG ----------------------------- */
+  // =========================
+  // SOURCE FILES
+  // =========================
   {
-    ...js.configs.recommended,
-  },
-
-  /* ------------------------ TYPESCRIPT + REACT ----------------------------- */
-  {
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx,js,jsx}'],
 
     languageOptions: {
       parser: tsParser,
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: globals.browser,
-
       parserOptions: {
-        project: './tsconfig.eslint.json',
-        tsconfigRootDir: process.cwd(),
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        // ⚠️ NÃO use project aqui (evita erro de parsing)
+      },
+      globals: {
+        ...globals.browser,
       },
     },
 
+    // 🔴 PLUGINS DEVEM ESTAR AQUI
     plugins: {
       '@typescript-eslint': tsPlugin,
+      react,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'jsx-a11y': jsxA11y,
       import: importPlugin,
-      prettier: prettierPlugin,
+      prettier,
+    },
+
+    settings: {
+      react: {
+        version: 'detect',
+      },
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.base.json',
+        },
+      },
     },
 
     rules: {
-      /* ---------------- TYPESCRIPT ---------------- */
-      ...tseslint.configs.recommendedTypeChecked.rules,
+      // =========================
+      // BASE
+      // =========================
+      ...js.configs.recommended.rules,
+
+      // =========================
+      // TYPESCRIPT
+      // =========================
+      ...tsPlugin.configs.recommended.rules,
 
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        { argsIgnorePattern: '^_' },
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/consistent-type-imports': 'error',
 
-      '@typescript-eslint/no-explicit-any': 'warn',
+      // =========================
+      // REACT
+      // =========================
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
 
-      /* ---------------- REACT ---------------- */
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
+      'react/prop-types': 'off',
 
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-
-      /* ---------------- IMPORT ORDER ---------------- */
+      // =========================
+      // IMPORT ORDER
+      // =========================
       'import/order': [
         'warn',
         {
@@ -79,26 +93,19 @@ export default [
             'external',
             'internal',
             ['parent', 'sibling', 'index'],
-            'object',
             'type',
           ],
-          pathGroups: [
-            {
-              pattern: '@/**',
-              group: 'internal',
-            },
-          ],
-          pathGroupsExcludedImportTypes: ['builtin'],
           'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
+          alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
 
-      /* ---------------- PRETTIER ---------------- */
+      'import/no-unresolved': 'off',
+
+      // =========================
+      // PRETTIER
+      // =========================
       'prettier/prettier': 'error',
     },
   },
-]
+];
