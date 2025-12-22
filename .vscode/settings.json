@@ -1,0 +1,26 @@
+{
+  // Prettier as default formatter
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Format on save
+  "editor.formatOnSave": true,
+
+  // ESLint fixes on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Files to be validated by ESLint
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Use ESLint's flat config
+  "eslint.useFlatConfig": true,
+
+  // Prettier requires a configuration file to format
+  "prettier.requireConfig": true
+}
