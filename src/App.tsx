@@ -1,8 +1,6 @@
-import { AppProviders } from "@providers/AppProvider";
+import { AppProviders } from "@/providers/AppProvider";
 
-import type { FC } from "react";
-
-const App: FC = () => {
+const App: React.FC = () => {
   return <AppProviders />;
 };
 
