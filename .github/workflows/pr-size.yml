@@ -1,0 +1,46 @@
+name: CI – MapTrack
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr-size-check:
+    name: PR Size Guard
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calculate lines changed
+        id: diff
+        run: |
+          BASE_REF="${{ github.base_ref }}"
+          git fetch origin $BASE_REF
+          LINES=$(git diff origin/$BASE_REF...HEAD --numstat \
+            | awk '{ added += $1; deleted += $2 } END { print added + deleted }')
+
+          echo "lines=$LINES" >> $GITHUB_OUTPUT
+
+      - name: Comment on large PR
+        if: ${{ steps.diff.outputs.lines > 600 }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const lines = Number("${{ steps.diff.outputs.lines }}");
+
+            const body = `🚨 **Large Pull Request detected** This PR contains **${lines}+ lines changed** > Recommended size: > - 🟢 Light PR: ≤ 300 lines > - 🟡 Medium PR: 300–600 lines > - 🔴 Full PR: 600+ lines. To keep **MapTrack** reviews focused, predictable, and fast, please consider: - Splitting this PR into smaller, scoped changes - Ensuring the Scope section is very explicit - Confirming this is intentionally a "full" PR;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

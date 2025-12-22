@@ -1,0 +1,15 @@
+{
+  "name": "maptrack-mock-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "reset": "node scripts/reset-db.js",
+    "fakes": "node scripts/generate-fakes.js",
+    "routes": "node scripts/print-routes.js"
+  },
+  "dependencies": {
+    "json-server": "^1.0.0",
+    "@faker-js/faker": "^8.4.1"
+  }
+}

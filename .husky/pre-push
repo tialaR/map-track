@@ -1,0 +1,31 @@
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+
+MAIN_BRANCHES="^(main|master|develop)$"
+CONVENTIONAL_BRANCHES="^(feat|fix|refactor|chore|docs|test|hotfix)\/[a-z0-9._-]+$"
+
+echo "🔎 Branch atual: $BRANCH_NAME"
+
+# Impedir push direto para main/develop
+if echo "$BRANCH_NAME" | grep -Eq "$MAIN_BRANCHES"; then
+  echo "❌ Push directly to '$BRANCH_NAME' is not allowed!"
+  echo "→ Create a feature branch instead."
+  exit 1
+fi
+
+# Conferir padrão convencional
+if ! echo "$BRANCH_NAME" | grep -Eq "$CONVENTIONAL_BRANCHES"; then
+  echo "❌ Branch name does not follow Conventional Branching!"
+  echo ""
+  echo "Valid examples:"
+  echo "  feat/new-ui"
+  echo "  fix/login-bug"
+  echo "  refactor/auth-service"
+  echo "  chore/update-deps"
+  echo "  docs/add-readme"
+  echo "  test/add-unit-tests"
+  echo ""
+  echo "Current: $BRANCH_NAME"
+  exit 1
+fi
+
+echo "✔ Branch name OK!"

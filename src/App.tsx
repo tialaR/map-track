@@ -1,5 +1,7 @@
-function App() {
-  return <h1>MAP-TRACK</h1>;
-}
+import { AppProviders } from "@/providers/AppProvider";
+
+const App: React.FC = () => {
+  return <AppProviders />;
+};
 
 export default App;

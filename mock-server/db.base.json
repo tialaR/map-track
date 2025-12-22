@@ -1,0 +1,35 @@
+{
+  "records_day": [
+    {
+      "id": "rec-001",
+      "title": "Registro do Dia - 05/08/2025",
+      "date": "2025-08-05",
+      "images": [
+        {
+          "id": "img-001",
+          "filename": "inspection_1.png",
+          "image": "data:image/png;base64,REPLACE_BASE64",
+          "timestamp": 1754387000000
+        }
+      ]
+    }
+  ],
+  "general_map": {
+    "id": "general-map-001",
+    "title": "Mapa Geral",
+    "image": "data:image/png;base64,REPLACE_BASE64",
+    "markers": []
+  },
+  "submaps": [],
+  "tabulation_day": {
+    "id": "tab-001",
+    "title": "Tabulação do Dia",
+    "content": "Previsão meteorológica por hora com base na localização.",
+    "current_date_full": "terça-feira, 05 de agosto de 2025",
+    "current_date_short": "05/08/2025",
+    "latitude": -12.9718,
+    "longitude": -38.5011,
+    "timezone": "America/Bahia",
+    "image": "data:image/png;base64,REPLACE_BASE64"
+  }
+}
