@@ -55,7 +55,7 @@ MapTrack eliminates repetitive manual work and centralizes daily construction in
 
 ---
 
-## Documentation:
+## 📘 Architecture Decision Records (ADR)
 
 Full documentation available in the [`/docs`](./docs) directory.
 
