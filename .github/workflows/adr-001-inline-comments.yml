@@ -1,0 +1,126 @@
+name: ADR-001 Inline Feedback
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  adr-001-inline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: Run ESLint (JSON)
+        run: |
+          npx eslint "src/**/*.{ts,tsx}" -f json -o eslint-report.json || true
+
+      - name: Inline ADR-001 comments
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+
+            const report = JSON.parse(
+              fs.readFileSync("eslint-report.json", "utf8")
+            );
+
+            const explanations = {
+              "local/no-obscure-function-names": {
+                title: "❌ Obscure function name",
+                message:
+                  "Function names must express intent clearly.\n\n" +
+                  "🔴 Problem: Name hides business meaning.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Use domain language\n" +
+                  "- Prefer verbs for actions (e.g. `calculatePrice`)"
+              },
+
+              "local/no-implicit-conditionals": {
+                title: "❌ Implicit conditional logic",
+                message:
+                  "Conditionals must be explicit and readable.\n\n" +
+                  "🔴 Problem: Logic relies on truthy/falsy behavior.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Use explicit comparisons\n" +
+                  "- Avoid hidden boolean coercion"
+              },
+
+              "local/no-magic-numbers": {
+                title: "❌ Magic number detected",
+                message:
+                  "Magic numbers reduce readability and intent.\n\n" +
+                  "🔴 Problem: Numeric value has no semantic meaning.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Extract to a named constant\n" +
+                  "- Or derive from domain config"
+              },
+
+              "local/no-negated-conditionals": {
+                title: "❌ Negated conditional",
+                message:
+                  "Negated conditionals increase cognitive load.\n\n" +
+                  "🔴 Problem: Logic is harder to read and reason about.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Prefer positive conditions\n" +
+                  "- Invert early with guard clauses"
+              },
+
+              "local/no-nested-conditionals": {
+                title: "❌ Nested conditional logic",
+                message:
+                  "Nested conditionals hide decision paths.\n\n" +
+                  "🔴 Problem: Deep nesting reduces readability.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Use early returns\n" +
+                  "- Extract decision logic to a function"
+              },
+
+              "local/no-fake-hooks": {
+                title: "❌ Fake Hook",
+                message:
+                  "Hooks must encapsulate state or side effects.\n\n" +
+                  "🔴 Problem: Function is named like a hook but has no React behavior.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Rename to a util (e.g. `buildUserName`), OR\n" +
+                  "- Introduce state/effect if it represents behavior."
+              },
+
+              "local/react-event-naming": {
+                title: "❌ Invalid React event naming",
+                message:
+                  "React events must follow semantic naming.\n\n" +
+                  "🔴 Problem: Event name does not reflect user intent.\n\n" +
+                  "✅ Fix:\n" +
+                  "- Use `on + Verb` (e.g. `onSubmit`, `onSelectItem`)"
+              }
+            };
+
+            for (const file of report) {
+              for (const msg of file.messages) {
+                if (!msg.ruleId || !msg.ruleId.startsWith("local/")) continue;
+
+                const explanation = explanations[msg.ruleId];
+
+                const body = explanation
+                  ? `**${explanation.title}**\n\n${explanation.message}\n\n📘 See \`docs/adr/ADR-001.md\``
+                  : `❌ **ADR-001 violation**\n\nRule: \`${msg.ruleId}\`\n\n${msg.message}`;
+
+                await github.rest.pulls.createReviewComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.issue.number,
+                  commit_id: context.payload.pull_request.head.sha,
+                  path: file.filePath.replace(process.cwd() + "/", ""),
+                  line: msg.line,
+                  side: "RIGHT",
+                  body
+                });
+              }
+            }
