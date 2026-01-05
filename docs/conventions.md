@@ -1,4 +1,17 @@
 ````markdown
+## Enforcement
+
+These conventions are enforced through:
+
+- ESLint rules
+- Prettier
+- GitHub Actions
+- Pull Request checklist
+
+Code that does not follow these conventions will not be merged.
+
+---
+
 # Code Conventions:
 
 This document defines the **coding conventions** adopted in the MapTrack project.
@@ -12,6 +25,35 @@ If a pattern already exists, **follow it**.
 ## Initial folder Structure:
 
 The project follows a **module oriented structure**.
+
+```txt
+src/
+  components/
+    commons/
+      Button/
+      Modal/
+    maps/
+      SubMap/
+    sidebar/
+      SideBar/
+  modules/
+    auth/
+      hooks/
+      services/
+      components/
+        ProtectedRoute.tsx
+    map/
+      hooks/
+      services/
+      components/
+  pages/
+    Home/
+    Login/
+  routes/
+    AppRoutes.tsx
+  libs/
+    api.ts
+```
 
 ```txt
 src/

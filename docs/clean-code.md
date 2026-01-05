@@ -1,3 +1,19 @@
+# Authority Level
+
+This document is **informational**.
+
+- It does not override ADRs
+- It does not override ESLint
+- It does not override CI
+
+When conflicts exist, the order of authority is:
+
+ADR → ESLint → CI → Documentation
+
+This guide explains **why** decisions exist, not **what is allowed**.
+
+---
+
 # Clean Code — Complete Guide to Best Practices (JS/TS/React)
 
 This guide exists to ensure:
@@ -516,25 +532,32 @@ Why this is correct:
 
 # DRY — Avoid duplication
 
-### ❌ Incorrect
+- Conscious decoupling
+- Avoid unnecessary code repetition
+- Prefer encapsulating the logic if it is used
+- Avoid excessive componentization
+- Avoid bloated components
+- JS-first
 
-```tsx
-if (user.age >= 18) allow();
+## Look at the JavaScript first, not the JSX
 
-if (admin.age >= 18) allow();
-```
+Split when:
 
-### ✅ Correct
+- The logic repeats
+- It's possible to isolate without breaking context
+- The component grows because of hooks, states, and effects
 
-```tsx
-function isAdult(person) {
-  return person.age >= 18;
-}
-```
+Don't split when:
+
+- It's just similar HTML
+- Extraction creates more files than clarity
+- The JSX is large, but the logic is simple
 
 ---
 
 # Dead code should be removed
+
+Commented code is historical garbage
 
 ### ❌ Wrong
 
@@ -545,10 +568,8 @@ function isAdult(person) {
 ### ✅ Correct
 
 ```tsx
-// removed
-```
 
-> Commented code is historical garbage
+```
 
 ---
 
@@ -574,8 +595,10 @@ function main() {
 function helper() {}
 ```
 
-> File should be read from top to bottom
-> More semantic reading
+Why this is correct:
+
+1. File should be read from top to bottom
+2. More semantic reading
 
 ---
 
@@ -597,10 +620,12 @@ getProducts();
 getOrders();
 ```
 
-> Facilitates maintenance
-> More semantic reading
-> There should be a pattern
-> Avoid inconsistency
+Why this is correct:
+
+1. Facilitates maintenance
+2. More semantic reading
+3. There should be a pattern
+4. Avoid inconsistency
 
 ---
 
@@ -618,10 +643,12 @@ function process() {}
 function calculateInvoiceTotal() {}
 ```
 
-> Facilitates maintenance
-> More semantic reading
-> Avoid black box
-> The code should be as expressive as possible
+Why this is correct:
+
+1. Facilitates maintenance
+2. More semantic reading
+3. Avoid black box
+4. The code should be as expressive as possible
 
 ---
 
