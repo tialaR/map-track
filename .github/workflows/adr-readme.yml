@@ -1,0 +1,37 @@
+name: ADR Changelog
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate ADR table
+        run: |
+          echo "## 📘 Architecture Decision Records (ADR)" > adr-table.md
+          echo "" >> adr-table.md
+          echo "| ADR | Version | Description |" >> adr-table.md
+          echo "|----|--------|------------|" >> adr-table.md
+
+          for file in docs/adr/**/ADR-*@v*.md; do
+            ADR=$(basename "$file" | cut -d@ -f1)
+            VERSION=$(basename "$file" | cut -d@ -f2 | sed 's/.md//')
+            TITLE=$(grep "^# " "$file" | head -n1 | sed 's/# //')
+
+            echo "| $ADR | $VERSION | $TITLE |" >> adr-table.md
+          done
+
+      - name: Inject into README
+        run: |
+          sed -i '/## 📘 Architecture Decision Records (ADR)/,$d' README.md
+          cat adr-table.md >> README.md
+
+      - uses: EndBug/add-and-commit@v9
+        with:
+          message: "docs(adr): update ADR changelog"
+          add: "README.md"

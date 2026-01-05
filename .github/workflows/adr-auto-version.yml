@@ -1,0 +1,32 @@
+name: ADR Auto Versioning
+
+on:
+  pull_request:
+    paths:
+      - "docs/adr/**"
+
+jobs:
+  adr-versioning:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect ADR edits
+        run: |
+          MODIFIED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep 'ADR-[0-9]\+@v')
+          if [ -n "$MODIFIED" ]; then
+            echo "❌ ADR version files must not be edited directly."
+            echo "Create a new version instead (ADR-XXX@vX.Y.md)."
+            exit 1
+          fi
+
+      - name: Detect ADR base change
+        run: |
+          BASE_CHANGE=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep 'docs/adr/ADR-[0-9]\+/ADR-[0-9]\+.md' || true)
+
+          if [ -n "$BASE_CHANGE" ]; then
+            echo "❌ Base ADR files cannot be edited."
+            echo "Use versioned files only."
+            exit 1
+          fi

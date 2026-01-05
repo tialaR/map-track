@@ -1,0 +1,45 @@
+name: ADR Checklist Validation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  adr-pr-checklist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate ADR checklist in PR description
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          echo "🔍 Validating ADR checklist..."
+
+          REQUIRED_CHECKS=(
+            "ADR-001 — Code Readability & Explicit Logic"
+            "ADR-002 — Hooks & Side Effects"
+          )
+
+          FAILED=0
+
+          for CHECK in "${REQUIRED_CHECKS[@]}"; do
+            if ! echo "$PR_BODY" | grep -q "\- \[x\] $CHECK"; then
+              echo "❌ Missing or unchecked: $CHECK"
+              FAILED=1
+            else
+              echo "✅ Checked: $CHECK"
+            fi
+          done
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 ADR Checklist Summary" >> $GITHUB_STEP_SUMMARY
+
+          if [ $FAILED -eq 1 ]; then
+            echo "- ❌ ADR checklist is incomplete" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "- ✅ ADR-001 checked" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ ADR-002 checked" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🚀 PR checklist is complete." >> $GITHUB_STEP_SUMMARY

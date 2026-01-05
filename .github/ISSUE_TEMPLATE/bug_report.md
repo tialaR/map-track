@@ -1,57 +1,45 @@
 ---
-name: Bug Report
-description: Report a bug in MapTrack
-labels: [bug]
+name: 🐛 Bug Report
+about: Report a bug or regression in MapTrack
+labels: bug
 ---
 
-# Bug Report – MapTrack
+## Description
 
-## Scope (Required)
-
-### Objective
-
-Describe the bug clearly and objectively.
-
-**Example:**
-Markers move outside the map image when zoom is enabled.
-
-### In Scope
-
-- Pages affected (e.g. `/map`, `/reports`)
-- Components involved (`ImageAnnotator`, `SnapshotBubble`)
-- Expected behavior
-
-### Out of Scope
-
-- New features
-- UI redesign
-- Performance improvements
-
----
-
-## Steps to Reproduce
-
-1. Open `/map`
-2. Enable zoom
-3. Drag a marker
-4. Marker exceeds image boundary
+Clearly describe the bug.
 
 ---
 
 ## Expected Behavior
 
-Marker movement should be restricted to image bounds.
+What should happen?
 
 ---
 
 ## Actual Behavior
 
-Marker can move outside visible map.
+What is happening instead?
 
 ---
 
-## Environment
+## Steps to Reproduce
 
-- OS:
-- Browser:
-- Device:
+1.
+2.
+3.
+
+---
+
+## Impact
+
+- [ ] UI only
+- [ ] Business logic
+- [ ] Data / persistence
+- [ ] Architecture
+
+---
+
+## ADR Impact
+
+- [ ] Does NOT affect existing ADRs
+- [ ] Requires ADR update or new ADR

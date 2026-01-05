@@ -1,30 +1,36 @@
 > Pull requests that do not follow this template may be rejected.
 
-# Pull Request – MapTrack
+# Pull Request — MapTrack
 
-## Scope (Required)
+---
 
-### Included
+## 📌 Scope (Required)
 
-- What this PR implements or changes
+### ✅ What’s Included
+
+Clearly describe **what this PR delivers**.
+
+- Features, fixes or refactors implemented
 - Affected modules (e.g. `map`, `markers`, `reports`)
-- Components or hooks created or updated
-- UI or UX changes aligned with the feature goal
+- Components, hooks or services created or updated
+- UI / UX changes aligned with the intended behavior
 
 **Example:**
 
 - Add draggable behavior to `InspectionMarker`
 - Persist marker position inside `ImageContainer`
-- Update styles using `styled-components`
+- Refactor marker state into `useMarkerPosition`
 
 ---
 
-### Not Included
+### 🚫 What’s Not Included
 
-- Features not described in the related issue
+Explicitly list **what this PR does NOT cover**.
+
+- Out-of-scope features
 - Global refactors
 - Performance optimizations not discussed
-- API contract changes
+- API or data contract changes
 
 **Example:**
 
@@ -34,64 +40,76 @@
 
 ---
 
-## Related Issue
+## 🔗 Related Issue
 
 Closes #XXX
 
 ---
 
-## How to Test
+## 🧪 How to Test
+
+Provide **clear, deterministic steps** to validate this PR.
 
 1. Run `yarn dev`
 2. Open `/map`
 3. Add a marker
-4. Drag it inside the image boundaries
-5. Reload page and validate persistence
+4. Drag it inside image boundaries
+5. Reload the page and validate persistence
 
 ---
 
-## Type of PR
+## 🧠 Architecture & ADR Compliance (Required)
 
-- [ ] Small change (use Light checklist)
-- [ ] Feature / Refactor (use Full checklist)
+> ⚠️ These rules are **automatically validated by GitHub Actions**  
+> PRs failing ADR checks **will be blocked**.
 
----
+### ADR Checklist
 
-## Checklist (Required)
+- [ ] **ADR-001 — Code Readability & Explicit Logic**
+  - No hidden conditionals or magic values
+  - Clear naming with domain intent
+  - Explicit control flow
 
-> This checklist is automatically validated by CI and pre-commit hooks.
+- [ ] **ADR-002 — Hooks & Side Effects**
+  - Hooks follow `useX` naming and semantics
+  - No fake hooks
+  - No conditional hooks
+  - Side effects isolated in hooks (`useEffect`, services)
 
-<!-- Use only ONE checklist below -->
-
-### Light Checklist
-
-- [ ] Clear and focused scope
-- [ ] Follows project standards
-- [ ] No unexpected side effects
-- [ ] UI consistent with the design system
-- [ ] Clear names and readable code
-
-### Full Checklist
-
-- [ ] Impact on inspection flow evaluated
-- [ ] Modular architecture respected
-- [ ] Logic outside of JSX
-- [ ] Isolated side effects
-- [ ] Domain-aligned typing
-- [ ] Consistent and responsive UI
-- [ ] Error states handled
-- [ ] Updated documentation (if necessary)
+- [ ] **Architecture & Quality**
+  - No business logic inside JSX
+  - Components are declarative
+  - Logic isolated in hooks, services or utils
+  - No string-based flags (`"enabled"`, `"active"`, `"true"`)
+  - No dead code, `console.log` or `debugger`
+  - Errors and empty states handled
 
 ---
 
-## Notes for Reviewers
+## ✅ PR READY RULE
 
-- Edge cases to test
-- Known limitations
-- Temporary decisions
+A Pull Request is considered **PR READY** only if **all conditions below are met**:
+
+- ADR-001 validation passes
+- ADR-002 validation passes
+- This checklist is fully completed
+- CI (lint, type-check, build) passes
+
+> ✅ When all checks pass, the **PR READY** status and label are applied automatically.
 
 ---
 
-## Screenshots / GIFs
+## 📝 Notes for Reviewers
 
-(Optional, but required for UI changes)
+(Optional but encouraged)
+
+- Edge cases to pay attention to
+- Trade-offs or temporary decisions
+- Follow-ups intentionally left out of this PR
+
+---
+
+## 🖼 Screenshots / GIFs
+
+Required for UI changes.  
+Include before/after when relevant.
