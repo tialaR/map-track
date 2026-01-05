@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "lint": "eslint src",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint src --fix",
     "lint:reset": "eslint src --no-cache",
     "format": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
@@ -16,7 +16,8 @@
     "check": "yarn lint && yarn type-check",
     "check-all": "yarn lint && yarn type-check && yarn build",
     "mock:server": "json-server --watch db.json --port 4000",
-    "prepare": "husky"
+    "prepare": "husky",
+    "adr": "bash scripts/create-adr.sh"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",
