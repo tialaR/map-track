@@ -1,45 +1,43 @@
 ---
-name: Feature Request
-description: Propose a new feature for MapTrack
-labels: [feature]
+name: ✨ Feature Request
+about: Propose a new feature for MapTrack
+labels: enhancement
 ---
 
-# Feature Request – MapTrack
+## Problem Statement
 
-## Scope (Required)
-
-### Objective
-
-Describe the feature goal.
-
-**Example:**
-Allow users to export a full PDF report containing maps, markers and weather data.
-
-### In Scope
-
-- PDF generation on client-side
-- Static layout
-- Daily weather snapshot
-- Marker rendering
-
-### Out of Scope
-
-- Backend integration
-- User authentication
-- PDF customization by user
+What problem does this feature solve?
 
 ---
 
-## Dependencies
+## Proposed Solution
 
-- `html2canvas`
-- `jspdf`
-- Map image availability
+Describe the solution at a high level.
 
 ---
 
-## Acceptance Criteria
+## Scope
 
-- PDF generated with one click
-- Includes all visible markers
-- Matches MapTrack layout
+### Included
+
+-
+
+### Not Included
+
+- ***
+
+## Architectural Impact
+
+- [ ] No architectural impact
+- [ ] Refactor existing architecture
+- [ ] Requires new ADR
+- [ ] Impacts existing ADR version
+
+If applicable, reference ADR:
+`ADR-XXX`
+
+---
+
+## Notes
+
+Optional considerations, risks or alternatives.

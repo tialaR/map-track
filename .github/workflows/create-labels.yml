@@ -1,0 +1,27 @@
+name: Create ADR Labels
+
+on:
+  workflow_dispatch:
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              { name: "PR READY", color: "0E8A16", description: "All ADR & CI checks passed" }
+              { name: "adr-001:violation", color: "B60205" },
+              { name: "adr-002:violation", color: "B60205" }
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ...label
+                });
+              } catch (e) {}
+            }

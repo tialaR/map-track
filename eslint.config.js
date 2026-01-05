@@ -8,6 +8,12 @@ import importPlugin from "eslint-plugin-import";
 import prettier from "eslint-plugin-prettier";
 import globals from "globals";
 
+const localRules = require("./eslint-rules");
+
+module.exports.plugins = {
+  local: localRules,
+};
+
 export default [
   // =========================
   // IGNORE
@@ -47,6 +53,18 @@ export default [
       "jsx-a11y": jsxA11y,
       import: importPlugin,
       prettier,
+      local: {
+        rules: {
+          "no-obscure-function-names": require("./eslint-rules/no-obscure-function-names"),
+          "no-implicit-conditionals": require("./eslint-rules/no-implicit-conditionals"),
+          "no-magic-numbers": require("./eslint-rules/no-magic-numbers"),
+          "no-side-effects-in-components": require("./eslint-rules/no-side-effects-in-components"),
+          "no-negated-conditionals": require("./eslint-rules/no-negated-conditionals"),
+          "no-nested-conditionals": require("./eslint-rules/no-nested-conditionals"),
+          "no-fake-hooks": require("./eslint-rules/no-fake-hooks"),
+          "react-event-naming": require("./eslint-rules/react-event-naming"),
+        },
+      },
     },
 
     settings: {
@@ -56,6 +74,9 @@ export default [
       "import/resolver": {
         typescript: {
           project: "./tsconfig.base.json",
+        },
+        node: {
+          paths: ["eslint-rules"],
         },
       },
     },
@@ -68,9 +89,21 @@ export default [
       "no-undef": "off", // Handled by TypeScript
 
       // =========================
-      // TYPESCRIPT
+      // LOCAL CUSTOM RULES
       // =========================
-      ...tsPlugin.configs.recommended.rules,
+      "local/no-obscure-function-names": "error",
+      "local/no-implicit-conditionals": "error",
+      "local/no-magic-numbers": "error",
+      "local/no-side-effects-in-components": "error",
+      "local/no-negated-conditionals": "error",
+      "local/no-nested-conditionals": "error",
+      "local/no-fake-hooks": "error",
+      "local/react-event-naming": "error",
+
+      // =========================
+      // JSX A11Y
+      // =========================
+      ...jsxA11y.configs.recommended.rules,
 
       "@typescript-eslint/no-unused-vars": [
         "warn",

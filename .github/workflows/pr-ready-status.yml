@@ -1,0 +1,103 @@
+name: PR READY
+
+on:
+  workflow_run:
+    workflows:
+      - ADR-001 Validation
+      - ADR-002 Validation
+      - ADR Checklist Validation
+      - CI
+    types: [completed]
+
+jobs:
+  pr-ready:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resolve PR
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prs = context.payload.workflow_run.pull_requests;
+            if (!prs?.length) return;
+            core.setOutput("number", prs[0].number);
+
+      - name: Evaluate readiness
+        id: ready
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: context.payload.workflow_run.head_branch,
+              per_page: 20
+            });
+
+            const required = [
+              "ADR-001 Validation",
+              "ADR-002 Validation",
+              "ADR Checklist Validation",
+              "CI"
+            ];
+
+            const status = Object.fromEntries(required.map(r => [r, false]));
+
+            for (const run of runs.data.workflow_runs) {
+              if (required.includes(run.name) && run.conclusion === "success") {
+                status[run.name] = true;
+              }
+            }
+
+            const allPassed = Object.values(status).every(Boolean);
+            core.setOutput("allPassed", allPassed);
+
+      - name: Update PR READY label
+        if: steps.pr.outputs.number
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = Number("${{ steps.pr.outputs.number }}");
+            const ready = "${{ steps.ready.outputs.allPassed }}" === "true";
+
+            const labels = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr
+            });
+
+            const hasLabel = labels.data.some(l => l.name === "PR READY");
+
+            if (ready && !hasLabel) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr,
+                labels: ["PR READY"]
+              });
+            }
+
+            if (!ready && hasLabel) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr,
+                name: "PR READY"
+              });
+            }
+
+      - name: Set PR READY status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.workflow_run.head_sha,
+              state: "${{ steps.ready.outputs.allPassed }}" === "true" ? "success" : "failure",
+              context: "PR READY",
+              description: "${{ steps.ready.outputs.allPassed }}" === "true"
+                ? "All ADR & CI checks passed"
+                : "ADR or CI checks failing"
+            });
