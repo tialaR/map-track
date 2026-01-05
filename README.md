@@ -24,10 +24,11 @@ MapTrack eliminates repetitive manual work and centralizes daily construction in
 - **React 18**
 - **Vite**
 - **TypeScript**
-- **styled-components**
+- **Styled-components**
 - **ESLint (Flat Config – v9+)**
 - **Prettier**
 - **React Router**
+- **JSON Server (Mock Service)**
 - **GitHub Actions (CI)**
 
 ---
