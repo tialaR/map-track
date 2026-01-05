@@ -57,7 +57,22 @@ MapTrack eliminates repetitive manual work and centralizes daily construction in
 
 ## 📘 Architecture Decision Records (ADR)
 
-| ADR     | Version | Description                               |
-| ------- | ------- | ----------------------------------------- | --- |
-| ADR-001 | v1.1    | DRY & Flags as the Single Source of Truth |
-| ADR-002 | v1.0    | Code Readability & Explicit Logic         | s   |
+Full documentation available in the [`/docs`](./docs) directory.
+
+| Topic        | Description                          |
+| ------------ | ------------------------------------ |
+| Clean Code   | Code quality principles, SOLID, KISS |
+| Conventions  | Naming, ESLint, formatting           |
+| Architecture | Project structure & decisions        |
+| Contributing | How to contribute                    |
+
+**_See > [`/docs`](./docs)_**
+
+---
+
+## License:
+
+This project is licensed under the MIT License.  
+See the [LICENSE](LICENSE) file for details.
+
+---
